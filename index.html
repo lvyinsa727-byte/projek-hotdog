@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loaded Hotdog Order</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff8f0;
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background-color: #b22222;
+      color: white;
+      padding: 1rem;
+    }
+    .container {
+      padding: 1rem;
+    }
+    .form-group {
+      margin: 1rem 0;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .menu-card {
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 0.5rem;
+      background: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-card img {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .menu-card p {
+      margin: 0.5rem 0 0;
+      font-weight: bold;
+    }
+    .menu-card.selected {
+      border-color: #28a745;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Loaded Hotdog Order</h1>
+    <p>Sila isi maklumat dan pilih menu</p>
+  </header>
+
+  <div class="container">
+    <div class="form-group">
+      <label for="name">Nama</label>
+      <input type="text" id="name" placeholder="Masukkan nama anda">
+    </div>
+    <div class="form-group">
+      <label for="phone">Nombor Telefon</label>
+      <input type="tel" id="phone" placeholder="Contoh: 01170261782">
+    </div>
+
+    <div class="form-group">
+      <label>Pilih Menu</label>
+      <div class="menu-grid">
+        <div class="menu-card" onclick="selectMenu('Basic', this)">
+          <img src="image/basic.png" alt="Basic">
+          <p>Basic</p>
+        </div>
+        <div class="menu-card" onclick="selectMenu('Premium', this)">
+          <img src="image/premium.png" alt="Premium">
+          <p>Premium</p>
+        </div>
+        <div class="menu-card" onclick="selectMenu('Set Puas', this)">
+          <img src="image/setpuas.png" alt="Set Puas">
+          <p>Set Puas</p>
+        </div>
+        <div class="menu-card" onclick="selectMenu('Beverage', this)">
+          <img src="image/beverage.png" alt="Beverage">
+          <p>Beverage</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="pickup">Pilihan Penghantaran</label>
+      <select id="pickup">
+        <option value="COD">Cash On Delivery</option>
+        <option value="Self Pickup">Ambil Sendiri</option>
+      </select>
+    </div>
+
+    <button onclick="sendOrder()">Hantar Tempahan</button>
+  </div>
+
+  <script>
+    let selectedMenu = '';
+    const whatsappNumber = '601170261782'; // nombor WhatsApp anda
+
+    function selectMenu(menu, element) {
+      selectedMenu = menu;
+      document.querySelectorAll('.menu-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      element.classList.add('selected');
+    }
+
+    function sendOrder() {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const pickup = document.getElementById('pickup').value;
+
+      if (!name || !phone || !selectedMenu) {
+        alert('Sila isi semua maklumat dan pilih menu.');
+        return;
+      }
+
+      const message =
+        `Tempahan Baru:%0A- Nama: ${name}%0A- Telefon: ${phone}%0A- Menu: ${selectedMenu}%0A- Pilihan: ${pickup}`;
+      const url = `https://wa.me/${whatsappNumber}?text=${message}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
